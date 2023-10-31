@@ -46,10 +46,10 @@ do
 done
 
 # Sort by first column (bash does not do by default)
-sort -k1 -n -o call_functions < call_functions
+sort -k1 -n -o call_functions_tmp < call_functions
 
 # Drop first column (should be assending)
-cut -d" " -f2- call_functions > call_functions
+cut -d" " -f2- call_functions_tmp > call_functions
 
 # Remove trailing spaces (optional)
 sed -i 's/\s\+$//' call_functions
