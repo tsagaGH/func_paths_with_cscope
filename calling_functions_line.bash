@@ -36,7 +36,6 @@ false > $new_file_name
 for i in "${name_id[@]}"
 do
   function_name=${id_name[$i]}
-  echo "$i, ${id_name[$i]}"
   call_list_id=
   call_name_list=`cscope -d -L -3 "$function_name" | cut -d" " -f2 |sort|uniq`
   call_list_length=`wc -w <<< $call_name_list`
@@ -50,7 +49,7 @@ done
 sort -k1 -n -o call_functions < call_functions
 
 # Drop first column (should be assending)
-cut -d" " -f2- call_functions
+cut -d" " -f2- call_functions > call_functions
 
 # Remove trailing spaces (optional)
 sed -i 's/\s\+$//' call_functions
