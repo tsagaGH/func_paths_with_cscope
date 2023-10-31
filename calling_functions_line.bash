@@ -11,17 +11,16 @@ false > all_functions # unec. maybe..
 ctags -x --c-types=f -R --languages=C $SME_GIT_ROOT |\
  cut -d" " -f1 | sort | uniq | awk '{print NR,$0}' > all_functions
 
-# Generate cscope database.
+# Generate cscope database and copy is over
+pushd / > /dev/null
 find $SME_GIT_ROOT -name *.c -o -name *.h > $SME_GIT_ROOT/cscope.files;
 pushd $SME_GIT_ROOT > /dev/null
-cscope -Rbkq && cp $SME_GIT_ROOT/cscope.{files,in.out,out,po.out} $this_dir
+cscope -Rbkq
 popd > /dev/null
+popd > /dev/null
+cp $SME_GIT_ROOT/cscope.{files,in.out,out,po.out} $this_dir
 
-echo gasd
-cscope -d -L -3sUpdateClockDiv
-echo GASD
-exit
-
+# Prepare to dead the database
 declare -A id_name
 declare -A name_id
 while IFS=" " read -r function_id function_name
@@ -30,28 +29,32 @@ do
   name_id[$function_name]=$function_id
 done < "$this_dir/all_functions"
 
+# read the database and build an assoc. file (call functions file)
+new_file_name="$this_dir/call_functions"
+touch $new_file_name
+false > $new_file_name
 for i in "${name_id[@]}"
 do
   function_name=${id_name[$i]}
   echo "$i, ${id_name[$i]}"
-  echo `cscope -d -L -3"$function_name" | cut -d" " -f2 |sort|uniq`
-  break
+  call_list_id=
+  call_name_list=`cscope -d -L -3 "$function_name" | cut -d" " -f2 |sort|uniq`
+  call_list_length=`wc -w <<< $call_name_list`
+  for l in $call_name_list; do
+    call_list_id="$call_list_id ${name_id[$l]}"
+  done
+  echo "$i $call_list_length $call_list_id" >> $new_file_name
 done
 
-exit
+# Sort by first column (bash does not do by default)
+sort -k1 -n -o call_functions < call_functions
 
+# Drop first column (should be assending)
+cut -d" " -f2- call_functions
 
+# Remove trailing spaces (optional)
+sed -i 's/\s\+$//' call_functions
 
-function_names_file="$this_dir/all_functions"
-new_file_name="$this_dir/call_functions"
-false > touch $new_file_name
-while IFS=" " read -r function_id function_name
-do
-  echo "$function_id, $function_name"
-  call_list_id=
-  for l in `cscope -L -3"$function_name" | cut -d" " -f2 |sort|uniq`; do
-    call_list_id="$call_list_id `\grep $l $function_names_file | cut -d" " -f1`"
-  done
-  echo $call_list_id >> $new_file_name
-done < "$function_names_file"
+unset id_name
+unset name_id
 
