@@ -6,7 +6,7 @@ static int *call_graphs[func_N];
 
 int main(int argc, const char ** argv) {
   char buffer[256];
-  int i;
+  int i, j;
   FILE *fp = NULL;
 
   /* read the files into my data struct */
@@ -22,19 +22,29 @@ int main(int argc, const char ** argv) {
     /* count entries and rewind */
     int cnt=0;
     char buf[8];
-    while (fscanf(fp, "%s", buf)) cnt++;
-    if (cnt > 0) {
-      rewind(fp);
-      /* read data */
-      call_graphs[i] = (int*)malloc(sizeof(int) * cnt);
-      cnt = 0;
-      while (fscanf(fp, "%s", buf)) call_graphs[i][cnt++] = atoi(buf);
-    }
+    while (fscanf(fp, "%s", buf) == 1) cnt++;
+    rewind(fp);
+    /* read data */
+    call_graphs[i] = (int*)malloc(sizeof(int) * (cnt+1));
+    call_graphs[i][0] = cnt;
+    cnt = 1;
+    while (fscanf(fp, "%s", buf) == 1) call_graphs[i][cnt++] = atoi(buf);
     fclose(fp);
   }
 
-  /* ... */
-  
+  /* find paths beginnings */
+  int could_not_be_beginning[func_N] = {};
+  for (i=0; i<func_N; ++i){
+    for (j=0; j<call_graphs[i][0]; ++j) {
+      could_not_be_beginning[ call_graphs[i][j+1] ] = 1;
+    }
+  }
+
+  for (i=0; i<func_N; ++i) {
+    if (could_not_be_beginning[i]==0) {
+        printf("%d could be path beginning\n", i+1);
+    }
+  }
 
 
   /* free and return */
