@@ -14,5 +14,7 @@ redo_id_files:
 	./calling_functions_line.bash
 
 clean:
-	rm call_exec get_all_paths.o
+	rm -f call_exec get_all_paths.o
+	rm -f cscope.in.out cscope.out cscope.po.out cscope.files
+	rm -f all_functions call_functions
 

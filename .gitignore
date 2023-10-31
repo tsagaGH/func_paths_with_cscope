@@ -5,6 +5,6 @@ cscope.files
 cscope.in.out
 cscope.out
 cscope.po.out
-dump
 all_functions
+call_functions
 
