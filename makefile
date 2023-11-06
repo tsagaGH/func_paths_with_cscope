@@ -1,6 +1,7 @@
 
-all:
-	echo You must choose targer.
+all: build run
+#all:
+#	echo You must choose targer.
 
 database:
 	bash calling_functions_line.bash

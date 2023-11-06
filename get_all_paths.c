@@ -62,7 +62,6 @@ int main(int argc, const char ** argv) {
   }
   fclose(fp);
 
-
   /* Open "called" database file */
   fp = fopen("/home/tsaga/Desktop/play_with_calling_trees/called_functions", "r");
   if (!fp) {
@@ -91,22 +90,7 @@ int main(int argc, const char ** argv) {
   }
   fclose(fp);
 
-  show_database(10, (const int **)call_graphs);
-  show_database(10, (const int **)called_graphs);
-
-//  /* find paths beginnings */
-//  int could_not_be_beginning[func_N] = {};
-//  for (i=0; i<func_N; ++i){
-//    for (j=0; j<call_graphs[i][0]; ++j) {
-//      could_not_be_beginning[ call_graphs[i][j+1] ] = 1;
-//    }
-//  }
-//
-//  for (i=0; i<func_N; ++i) {
-//    if (could_not_be_beginning[i]==0) {
-//        printf("%d could be path beginning\n", i+1);
-//    }
-//  }
+  print_all_paths(func_N, (const int ** const)called_graphs);
 
   /* free and return */
   for (i=0; i<func_N; ++i){
