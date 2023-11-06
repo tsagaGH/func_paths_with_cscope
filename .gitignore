@@ -1,13 +1,18 @@
+
+*.swp
+
 call_exec
 *.o
-*.swp
+
 cscope.files
 cscope.in.out
 cscope.out
 cscope.po.out
+
 all_functions
-called_functions_tmp
-called_functions
-call_functions_tmp
-call_functions
+
+call_tree_up
+call_tree_up_tmp
+call_tree_down
+call_tree_down_tmp
 

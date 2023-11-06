@@ -20,17 +20,11 @@ void print_all_paths(const int len, const int ** const database) {
   for (i=0; i<len; ++i) if (am_called[i] == 0) path_beginnings[j++] = i;
   free(am_called);
 
-//  printf("path_beginnings:\n");
-//  for (i=0; i<cnt; ++i) {
-//    printf("%d__%d\n", i, path_beginnings[i]+1);
-//  }
-
   int visited[2000] = {};
   int visited_i;
   for (i=0; i<cnt; ++i) {
-    if ( path_beginnings[i] != 138 ) continue;
     visited_i = 0;
-    printf("________Start at %d :\n", path_beginnings[i]);
+//    printf("%d\n", path_beginnings[i]);
     print_all_paths_from(-1, database, path_beginnings[i], visited, &visited_i,0);
   }
 

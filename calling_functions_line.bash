@@ -1,17 +1,13 @@
 #/usr/bin/bash
 
-# NOTE: IFS means Internal Field Separator.
-# NOTE: Make sure to be in this dir when calling
-
 this_dir="/home/tsaga/Desktop/play_with_calling_trees"
 cd $this_dir
 
-# gather all functions
-false > all_functions # unec. maybe..
+# White down all functions in the project in $SME_GIT_ROOT.
 ctags -x --c-types=f -R --languages=C $SME_GIT_ROOT |\
  cut -d" " -f1 | sort | uniq | awk '{print NR,$0}' > all_functions
 
-# Generate cscope database and copy is over
+# Generate cscope database and copy is over.
 pushd / > /dev/null
 find $SME_GIT_ROOT -name *.c -o -name *.h > $SME_GIT_ROOT/cscope.files;
 pushd $SME_GIT_ROOT > /dev/null
@@ -20,20 +16,21 @@ popd > /dev/null
 popd > /dev/null
 cp $SME_GIT_ROOT/cscope.{files,in.out,out,po.out} $this_dir
 
-# Prepare to dead the database
+# Prepare to read the database.
 declare -A id_name
 declare -A name_id
 while IFS=" " read -r function_id function_name
 do
+  # NOTE: IFS means Internal Field Separator.
   id_name[$function_id]=$function_name
   name_id[$function_name]=$function_id
 done < "$this_dir/all_functions"
 
-# read the database and build an assoc. file (call functions file)
-new_file_name="$this_dir/call_functions"
-new_file_name2="$this_dir/called_functions"
-false > $new_file_name
-false > $new_file_name2
+# Read the database and build an associative file(s).
+call_tree_up="$this_dir/call_tree_up"
+call_tree_down="$this_dir/call_tree_down"
+false > $call_tree_up
+false > $call_tree_down
 for i in "${name_id[@]}"
 do
   function_name=${id_name[$i]}
@@ -42,28 +39,28 @@ do
   for l in `cscope -d -L -3 "$function_name" | cut -d" " -f2 |sort|uniq`; do
     call_list_id="$call_list_id ${name_id[$l]}"
   done
-  call_list_length=`wc -w <<< $call_list_id`
-  echo "$i $call_list_length $call_list_id" >> $new_file_name
+  len=`wc -w <<< $call_list_id`
+  echo "$i $len $call_list_id" >> $call_tree_up
 
   called_list_id=
   for l in `cscope -d -L -2 "$function_name" | cut -d" " -f2 |sort|uniq`; do
     called_list_id="$called_list_id ${name_id[$l]}"
   done
-  called_list_length=`wc -w <<< $called_list_id`
-  echo "$i $called_list_length $called_list_id" >> $new_file_name2
+  len=`wc -w <<< $called_list_id`
+  echo "$i $len $called_list_id" >> $call_tree_down
 done
 
 # Sort by first column (bash does not do by default)
-sort -k1 -n -o call_functions_tmp < call_functions
-sort -k1 -n -o called_functions_tmp < called_functions
+sort -k1 -n -o ${call_tree_up}_tmp < $call_tree_up
+sort -k1 -n -o ${call_tree_down}_tmp < $call_tree_down
 
 # Drop first column (should be assending)
-cut -d" " -f2- call_functions_tmp > call_functions
-cut -d" " -f2- called_functions_tmp > called_functions
+cut -d" " -f2- ${call_tree_up}_tmp > $call_tree_up
+cut -d" " -f2- ${call_tree_down}_tmp  > $call_tree_down
 
 # Remove trailing spaces (optional)
-sed -i 's/\s\+$//' call_functions
-sed -i 's/\s\+$//' called_functions
+sed -i 's/\s\+$//' $call_tree_up
+sed -i 's/\s\+$//' $call_tree_down
 
 unset id_name
 unset name_id

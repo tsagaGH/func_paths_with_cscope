@@ -30,7 +30,7 @@ clean_cscope_files:
 	rm -f cscope.in.out cscope.out cscope.po.out cscope.files
 
 clean_files:
-	rm -f  all_functions
-	rm -f call_functions     called_functions
-	rm -f call_functions_tmp called_functions_tmp
+	rm -f  all_functions \
+		call_tree_down     call_tree_up \
+		call_tree_down_tmp call_tree_up_tmp
 
