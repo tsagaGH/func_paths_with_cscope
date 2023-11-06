@@ -39,19 +39,17 @@ do
   function_name=${id_name[$i]}
 
   call_list_id=
-  call_name_list=`cscope -d -L -3 "$function_name" | cut -d" " -f2 |sort|uniq`
-  call_list_length=`wc -w <<< $call_name_list`
-  for l in $call_name_list; do
+  for l in `cscope -d -L -3 "$function_name" | cut -d" " -f2 |sort|uniq`; do
     call_list_id="$call_list_id ${name_id[$l]}"
   done
+  call_list_length=`wc -w <<< $call_list_id`
   echo "$i $call_list_length $call_list_id" >> $new_file_name
 
   called_list_id=
-  called_name_list=`cscope -d -L -2 "$function_name" | cut -d" " -f2 |sort|uniq`
-  called_list_length=`wc -w <<< $called_name_list`
-  for l in $called_name_list; do
+  for l in `cscope -d -L -2 "$function_name" | cut -d" " -f2 |sort|uniq`; do
     called_list_id="$called_list_id ${name_id[$l]}"
   done
+  called_list_length=`wc -w <<< $called_list_id`
   echo "$i $called_list_length $called_list_id" >> $new_file_name2
 done
 
