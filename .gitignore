@@ -6,6 +6,8 @@ cscope.in.out
 cscope.out
 cscope.po.out
 all_functions
+called_functions_tmp
+called_functions
 call_functions_tmp
 call_functions
 

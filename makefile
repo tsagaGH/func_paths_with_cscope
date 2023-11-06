@@ -1,9 +1,12 @@
 
-all: call_exec
+all:
+	echo You must choose targer.
+
 
 get_all_paths.o: get_all_paths.c
 	gcc -c $^ -o $@
 
+build: call_exec
 call_exec: get_all_paths.o
 	gcc $^ -o $@
 
@@ -16,5 +19,5 @@ redo_id_files:
 clean:
 	rm -f call_exec get_all_paths.o
 	rm -f cscope.in.out cscope.out cscope.po.out cscope.files
-	rm -f all_functions_tmp all_functions call_functions
+	rm -f all_functions call{,ed}_functions{,_tmp}
 

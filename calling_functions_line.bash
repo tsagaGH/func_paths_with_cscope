@@ -31,11 +31,13 @@ done < "$this_dir/all_functions"
 
 # read the database and build an assoc. file (call functions file)
 new_file_name="$this_dir/call_functions"
-touch $new_file_name
+new_file_name2="$this_dir/called_functions"
 false > $new_file_name
+false > $new_file_name2
 for i in "${name_id[@]}"
 do
   function_name=${id_name[$i]}
+
   call_list_id=
   call_name_list=`cscope -d -L -3 "$function_name" | cut -d" " -f2 |sort|uniq`
   call_list_length=`wc -w <<< $call_name_list`
@@ -43,16 +45,27 @@ do
     call_list_id="$call_list_id ${name_id[$l]}"
   done
   echo "$i $call_list_length $call_list_id" >> $new_file_name
+
+  called_list_id=
+  called_name_list=`cscope -d -L -2 "$function_name" | cut -d" " -f2 |sort|uniq`
+  called_list_length=`wc -w <<< $called_name_list`
+  for l in $called_name_list; do
+    called_list_id="$called_list_id ${name_id[$l]}"
+  done
+  echo "$i $called_list_length $called_list_id" >> $new_file_name2
 done
 
 # Sort by first column (bash does not do by default)
 sort -k1 -n -o call_functions_tmp < call_functions
+sort -k1 -n -o called_functions_tmp < called_functions
 
 # Drop first column (should be assending)
 cut -d" " -f2- call_functions_tmp > call_functions
+cut -d" " -f2- called_functions_tmp > called_functions
 
 # Remove trailing spaces (optional)
 sed -i 's/\s\+$//' call_functions
+sed -i 's/\s\+$//' called_functions
 
 unset id_name
 unset name_id

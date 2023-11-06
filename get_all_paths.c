@@ -30,6 +30,8 @@ int main(int argc, const char ** argv) {
       j++;
       token = strtok(NULL, " ");
     }
+//    printf("i = %d, [%d]:", i+1, call_graphs[i][0]);
+//    for (j = 0 ; j <= call_graphs[i][0]; ++j) printf("  %d", call_graphs[i][j]); printf("\n");
     i++;
   }
   fclose(fp);
