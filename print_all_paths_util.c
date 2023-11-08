@@ -37,27 +37,22 @@ static void print_all_paths_from(
       int start,
       int* visited,
       int* vnum_ptr) {
-  static int do_repreint_visited_list = 0; // DOTO: I hope I use this right.
-  int i, j;
+  int i;
 
   for (i=0; i<*vnum_ptr; ++i) {
     if (start == visited[i]) {
       print_visited_list(visited, *vnum_ptr);
-      printf(" %d  LOOP\n", start);
+      printf("%6d LOOP\n", start);
       return;
     }
   }
   visited[*vnum_ptr] = start;
   (*vnum_ptr)++; // Caution: Without parenthesis the interpretation is different.
-  do_repreint_visited_list = 1;
-  for (i=0;i<database[start][0]; ++i) {
+  for (i=0; i<database[start][0]; ++i) {
     print_all_paths_from(database, database[start][i+1], visited, vnum_ptr);
   }
-  if (do_repreint_visited_list==1){
-    print_visited_list(visited, *vnum_ptr);
-    printf("\n");
-  }
-  do_repreint_visited_list = 0;
+  print_visited_list(visited, *vnum_ptr);
+  printf("\n");
   (*vnum_ptr)--; // Caution: The parenthesis are necessary.
 }
 

@@ -19,9 +19,10 @@ do
   do
     echo -n "${id_name[$id]} " >> $paths_name
   done
-  echo -e "\b" >> $paths_name
+  echo >> $paths_name
 done < "$this_dir/paths_id"
 
-popd > /dev/null
+sed -i 's/\s\+$//' $paths_name
 
+popd > /dev/null
 
