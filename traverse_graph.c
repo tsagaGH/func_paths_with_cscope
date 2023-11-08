@@ -1,8 +1,8 @@
 
-#include <stdio.h>
+#include <stdio.h> // printf()
 #include <stdlib.h>
 
-#include "traverse_graph.h" // lol, stupid function headers.
+#include "traverse_graph.h"
 
 void print_all_paths(const int len, const int ** const database) {
   int i, j;
@@ -37,7 +37,7 @@ static void print_all_paths_from(const int len, const int ** const database, int
 
   for (i=0; i<visited_i[0]; ++i) {
     if (start == visited[i]) {
-      print_visited_list(visited, visited_i);
+      print_visited_list(visited, visited_i[0]);
       printf(" .. LOOP\n");
       return;
     }
@@ -48,17 +48,16 @@ static void print_all_paths_from(const int len, const int ** const database, int
     print_all_paths_from(-1, database, database[start][i+1]-1, visited, visited_i,depth+1);
   }
   if (doit==1){
-    print_visited_list(visited, visited_i);
+    print_visited_list(visited, visited_i[0]);
     printf("\n");
   }
   doit = 0;
   visited_i[0]--;
 }
 
-static void print_visited_list(int *visited, int* visited_i) {
+static void print_visited_list(int *list, int sz) {
   int i;
-  for(i=0;i<visited_i[0]; ++i) printf("%6d",visited[i]);
+  for (i=0; i<sz; ++i)
+    printf("%6d",list[i]);
 }
-
-
 

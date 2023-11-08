@@ -1,11 +1,11 @@
 #/usr/bin/bash
 
-this_dir="/home/tsaga/Desktop/play_with_calling_trees"
-cd $this_dir
+this_dir=`dirname -- "$( readlink -f -- "$0"; )";`
+pushd $this_dir/other_project_cscope_files_dir/ > /dev/null
 
 # White down all functions in the project in $SME_GIT_ROOT.
 ctags -x --c-types=f -R --languages=C $SME_GIT_ROOT |\
- cut -d" " -f1 | sort | uniq | awk '{print NR,$0}' > all_functions
+  cut -d" " -f1 | sort | uniq | awk '{print NR,$0}' > $this_dir/all_functions
 
 # Generate cscope database and copy is over.
 pushd / > /dev/null
@@ -14,7 +14,8 @@ pushd $SME_GIT_ROOT > /dev/null
 cscope -Rbkq
 popd > /dev/null
 popd > /dev/null
-cp $SME_GIT_ROOT/cscope.{files,in.out,out,po.out} $this_dir
+cp $SME_GIT_ROOT/cscope.{files,in.out,out,po.out} $this_dir/other_project_cscope_files_dir/
+#cp $SME_GIT_ROOT/cscope.{files,in.out,out,po.out} .
 
 # Prepare to read the database.
 declare -A id_name
@@ -64,4 +65,6 @@ sed -i 's/\s\+$//' $call_tree_down
 
 unset id_name
 unset name_id
+
+popd
 

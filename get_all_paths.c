@@ -1,48 +1,46 @@
+
 #include <stdio.h>
-#include <string.h>
+#include <string.h> // getline()
 #include <stdlib.h>
 
-#include "traverse_graph.h"
-
-//#define func_N  1813 // This is how many functions there are in the project at the moment.
-//static int *call_graphs[func_N] = {};
-//static int *called_graphs[func_N] = {};
-
-static void show_database(const int len, const int ** const database);
-
-static int **call_graphs;
-static int **called_graphs;
-static int func_N = 0;
+#include "traverse_graph.h" // print_all_paths()
 
 int main(int argc, const char ** argv) {
+  int **call_graphs;
+  int **called_graphs;
+  int func_N; // Total number of function (number of lines in "all_functions").
+
   int i, j;
   char *buf;
   size_t len;
   FILE *fp;
 
-  /* Open functions file to count them */
-  fp = fopen("/home/tsaga/Desktop/play_with_calling_trees/all_functions", "r");
+  const char all_functions [256] = "/home/tsaga/Desktop/play_with_calling_trees/all_functions";
+  const char call_tree_up  [256] = "/home/tsaga/Desktop/play_with_calling_trees/call_tree_up";
+  const char call_tree_down[256] = "/home/tsaga/Desktop/play_with_calling_trees/call_tree_down";
+
+  /* Open functions file to count them. */
+  fp = fopen(all_functions, "r");
   if (!fp) {
-    fprintf(stderr, "File could not be opened. Returning...\n");
+    fprintf(stderr, "File \"%s\" could not be opened. Returning with error...\n", all_functions);
     fflush(stderr);
     return 1;
   }
   func_N = 0;
-  char c;
-  for (c = getc(fp); c != EOF; c = getc(fp)) func_N+= c=='\n';
+  char c; for (c = getc(fp); c != EOF; c = getc(fp)) func_N+= c=='\n';
   fclose(fp);
+
+  /* Reserve memory for adjacency lists. */
   call_graphs = (int**)malloc(sizeof(int*) * func_N);
   called_graphs = (int**)malloc(sizeof(int*) * func_N);
 
-  /* Open "call" database file */
-  fp = fopen("/home/tsaga/Desktop/play_with_calling_trees/call_functions", "r");
+  /* Fill up adjacency list with how up-function-calls. */
+  fp = fopen(call_tree_up, "r");
   if (!fp) {
-    fprintf(stderr, "File could not be opened. Returning...\n");
+    fprintf(stderr, "File \"%s\" could not be opened. Returning with error...\n", call_tree_up);
     fflush(stderr);
     return 1;
   }
-
-  /* read the file into my double array */
   buf = NULL;
   len = 0;
   i = 0;
@@ -62,15 +60,13 @@ int main(int argc, const char ** argv) {
   }
   fclose(fp);
 
-  /* Open "called" database file */
-  fp = fopen("/home/tsaga/Desktop/play_with_calling_trees/called_functions", "r");
+  /* Fill up adjacency list with down-function-calls. */
+  fp = fopen(call_tree_down, "r");
   if (!fp) {
-    fprintf(stderr, "File could not be opened. Returning...\n");
+    fprintf(stderr, "File \"%s\" could not be opened. Returning with error...\n", call_tree_down);
     fflush(stderr);
     return 1;
   }
-
-  /* read the file into my double array */
   buf = NULL;
   len = 0;
   i = 0;
@@ -92,7 +88,7 @@ int main(int argc, const char ** argv) {
 
   print_all_paths(func_N, (const int ** const)called_graphs);
 
-  /* free and return */
+  /* Free and return. */
   for (i=0; i<func_N; ++i){
     free(call_graphs[i]);
     free(called_graphs[i]);
@@ -100,18 +96,6 @@ int main(int argc, const char ** argv) {
   free(call_graphs);
   free(called_graphs);
 
-  return 0;
-}
-
-static void show_database(const int len, const int ** const database) {
-  int i, j;
-  printf("Showing:\n");
-  for (i=0; i<len; ++i) {
-    printf("%d: [%d]", i+1, database[i][0]);
-    for (j=0; j<database[i][0]; ++j) {
-      printf("  %d", database[i][j+1]);
-    }
-    printf("\n");
-  }
+  return 0; // Success.
 }
 

@@ -1,12 +1,12 @@
 
+objects=get_all_paths traverse_graph
+
 all: build run
 #all:
 #	echo You must choose targer.
 
 database:
 	bash calling_functions_line.bash
-
-objects=get_all_paths traverse_graph
 
 ${objects}: % : %.c
 	gcc -c $^ -o $@.o
@@ -16,21 +16,15 @@ call_exec: ${objects}
 	gcc $(addsuffix .o,$^) -o $@
 
 run:
-	./call_exec hello bro
+	./call_exec
 
-redo_id_files:
-	./calling_functions_line.bash
-
-clean_all: clean_cscope_files clean_c_objects clean_database_files
-
+clean: clean_cscope_files clean_c_objects clean_bash_files
+clean_cscope_files:
+	rm -f other_project_cscope_files_dir/cscope.{files,in.out,out,po.out}
 clean_c_objects:
 	rm -f call_exec $(addsuffix .o,${objects})
-
-clean_cscope_files:
-	rm -f cscope.in.out cscope.out cscope.po.out cscope.files
-
-clean_files:
+clean_bash_files:
 	rm -f  all_functions \
-		call_tree_down     call_tree_up \
-		call_tree_down_tmp call_tree_up_tmp
+	  call_tree_down     call_tree_up \
+	  call_tree_down_tmp call_tree_up_tmp
 
