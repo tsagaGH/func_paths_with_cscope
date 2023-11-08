@@ -5,7 +5,7 @@ pushd $this_dir/other_project_cscope_files_dir/ > /dev/null
 
 # White down all functions in the project in $SME_GIT_ROOT.
 ctags -x --c-types=f -R --languages=C $SME_GIT_ROOT |\
-  cut -d" " -f1 | sort | uniq | awk '{print NR,$0}' > $this_dir/all_functions
+  cut -d" " -f1 | sort | uniq | awk '{print NR-1,$0}' > $this_dir/all_functions
 
 # Generate cscope database and copy is over.
 pushd / > /dev/null
@@ -66,5 +66,5 @@ sed -i 's/\s\+$//' $call_tree_down
 unset id_name
 unset name_id
 
-popd
+popd > /dev/null
 

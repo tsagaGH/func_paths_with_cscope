@@ -27,8 +27,13 @@ int main(int argc, const char ** argv) {
     return 1;
   }
   func_N = 0;
-  char c; for (c = getc(fp); c != EOF; c = getc(fp)) func_N+= c=='\n';
+  char c;
+  for (c = getc(fp); c != EOF; c = getc(fp)) func_N+= c=='\n';
   fclose(fp);
+  // Note: The file has two columns. The first column is basically the line count.
+  //       So, by reading the first word of the last line is enough to know "func_N".
+  //       Or, maybe consider flipping the first column during "all_functions" file
+  //       creation, so that you can only the very first word in the file.
 
   /* Reserve memory for adjacency lists. */
   call_graphs = (int**)malloc(sizeof(int*) * func_N);

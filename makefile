@@ -22,7 +22,7 @@ id_to_name:
 	bash id_to_name.bash
 
 clean: clean_cscope_files clean_c_objects clean_bash_files
-	paths_id
+	rm -f paths_id paths_name
 clean_cscope_files:
 	rm -f other_project_cscope_files_dir/cscope.files \
 	  other_project_cscope_files_dir/cscope.in.out \
