@@ -86,6 +86,7 @@ int main(int argc, const char ** argv) {
   }
   fclose(fp);
 
+  /* Simply white out all possible (full) paths. */
   print_all_paths(func_N, (const int ** const)called_graphs);
 
   /* Free and return. */

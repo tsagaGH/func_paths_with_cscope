@@ -1,7 +1,7 @@
 
 *.swp
 
-call_exec
+paths
 *.o
 
 all_functions

@@ -24,14 +24,19 @@ void print_all_paths(const int len, const int ** const database) {
   int visited_i;
   for (i=0; i<cnt; ++i) {
     visited_i = 0;
-//    printf("%d\n", path_beginnings[i]);
     print_all_paths_from(-1, database, path_beginnings[i], visited, &visited_i,0);
   }
 
   free(path_beginnings);
 }
 
-static void print_all_paths_from(const int len, const int ** const database, int start, int* visited, int * visited_i, int depth) {
+static void print_all_paths_from(
+      const int len,
+      const int ** const database,
+      int start,
+      int* visited,
+      int * visited_i,
+      int depth) {
   static int doit = 0;
   int i, j;
 
