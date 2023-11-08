@@ -1,12 +1,12 @@
 
 objects=print_all_paths print_all_paths_util
 
-all: c_build run
+all: id_to_name
 #all:
 #	echo You must choose targer.
 
 database:
-	bash calling_functions_line.bash
+	bash all_calls.bash
 
 ${objects}: % : %.c
 	gcc -c $^ -o $@.o
@@ -16,9 +16,13 @@ paths: ${objects}
 	gcc $(addsuffix .o,$^) -o $@
 
 run:
-	./paths
+	./paths > paths_id
+
+id_to_name:
+	bash id_to_name.bash
 
 clean: clean_cscope_files clean_c_objects clean_bash_files
+	paths_id
 clean_cscope_files:
 	rm -f other_project_cscope_files_dir/cscope.files \
 	  other_project_cscope_files_dir/cscope.in.out \

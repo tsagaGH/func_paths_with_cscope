@@ -1,4 +1,5 @@
 
+tags
 *.swp
 
 paths
@@ -11,5 +12,5 @@ call_tree_up_tmp
 call_tree_down
 call_tree_down_tmp
 
-tags
+paths_id
 
