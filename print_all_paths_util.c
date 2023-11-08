@@ -48,13 +48,16 @@ static void print_all_paths_from(
   }
   visited[*vnum_ptr] = start;
   (*vnum_ptr)++; // Caution: Without parenthesis the interpretation is different.
-  for (i=0; i<database[start][0]; ++i) {
+  for (i=0; i<database[start][0]; ++i)
     print_all_paths_from(database, database[start][i+1], visited, vnum_ptr);
+  if (database[start][0]==0) {
+    print_visited_list(visited, *vnum_ptr);
+    printf("\n");
   }
-  print_visited_list(visited, *vnum_ptr);
-  printf("\n");
   (*vnum_ptr)--; // Caution: The parenthesis are necessary.
 }
 
-static inline void print_visited_list(const int * const list, const int sz) { int i; for (i=0; i<sz; ++i) printf("%6d", list[i]); }
+static inline void print_visited_list(const int * const list, const int sz) {
+  int i; for (i=0; i<sz; ++i) printf("%6d", list[i]);
+}
 
