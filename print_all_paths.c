@@ -3,7 +3,7 @@
 #include <string.h> // getline()
 #include <stdlib.h>
 
-#include "traverse_graph.h" // print_all_paths()
+#include "print_all_paths_util.h" // print_all_paths()
 
 int main(int argc, const char ** argv) {
   int **call_graphs;

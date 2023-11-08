@@ -1,5 +1,5 @@
 
-objects=print_all_paths traverse_graph
+objects=print_all_paths print_all_paths_util
 
 all: c_build run
 #all:
