@@ -8,7 +8,7 @@ all:
 	$(MAKE) run
 	$(MAKE) id_to_name
 
-all:
+#all:
 	# Empty
 
 database:
@@ -24,8 +24,8 @@ paths: ${objects}
 run:
 	./paths > paths_id
 
-#bash id_to_name.bash
 id_to_name:
+	bash id_to_name.bash
 	awk '{print $$1}'  paths_name | sort | uniq > paths_start
 	awk '{print $$NF}' paths_name | sort | uniq > paths_end
 
