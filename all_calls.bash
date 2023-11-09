@@ -8,14 +8,8 @@ ctags -x --c-types=f -R --languages=C $SME_GIT_ROOT |\
   cut -d" " -f1 | sort | uniq | awk '{print NR-1,$0}' > $this_dir/all_functions
 
 # Generate cscope database and copy is over.
-pushd / > /dev/null
-find $SME_GIT_ROOT -name *.c -o -name *.h > $SME_GIT_ROOT/cscope.files;
-pushd $SME_GIT_ROOT > /dev/null
-cscope -Rbkq
-popd > /dev/null
-popd > /dev/null
-cp $SME_GIT_ROOT/cscope.{files,in.out,out,po.out} $this_dir/other_project_cscope_files_dir/
-#cp $SME_GIT_ROOT/cscope.{files,in.out,out,po.out} .
+build_cscope_db_for_sme_func
+cp --force $SME_GIT_ROOT/cscope.{files,in.out,out,po.out} .
 
 # Prepare to read the database.
 declare -A id_name

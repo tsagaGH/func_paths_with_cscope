@@ -28,9 +28,12 @@ id_to_name:
 	bash id_to_name.bash
 	awk '{print $$1}'  paths_name | sort | uniq > paths_start
 	awk '{print $$NF}' paths_name | sort | uniq > paths_end
+	while read -r fn; do \
+	  echo -n "$${fn} " && (\grep "\<$${fn}\>" paths_name | wc -l ); \
+	done < paths_start | awk '{print $$2, $$1}' | sort -n > paths_start_power
 
 clean: clean_cscope_files clean_c_objects clean_bash_files
-	rm -f paths_id paths_name paths_start paths_end
+	rm -f paths_id paths_name paths_start paths_end paths_start_power
 clean_cscope_files:
 	rm -f other_project_cscope_files_dir/cscope.files \
 	  other_project_cscope_files_dir/cscope.in.out \
