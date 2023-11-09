@@ -1,9 +1,8 @@
 
 objects=print_all_paths print_all_paths_util
 
-all: id_to_name
-#all:
-#	echo You must choose targer.
+all:
+	echo You must choose targer.
 
 database:
 	bash all_calls.bash
