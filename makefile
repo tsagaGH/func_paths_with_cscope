@@ -2,7 +2,14 @@
 objects=print_all_paths print_all_paths_util
 
 all:
-	echo You must choose targer.
+	$(MAKE) clean
+	$(MAKE) database
+	$(MAKE) c_build
+	$(MAKE) run
+	$(MAKE) id_to_name
+
+all:
+	# Empty
 
 database:
 	bash all_calls.bash
@@ -17,10 +24,10 @@ paths: ${objects}
 run:
 	./paths > paths_id
 
+#bash id_to_name.bash
 id_to_name:
-	bash id_to_name.bash
-	awk '{print $1}'  paths_name | sort | uniq > paths_start
-	awk '{print $NF}' paths_name | sort | uniq > paths_end
+	awk '{print $$1}'  paths_name | sort | uniq > paths_start
+	awk '{print $$NF}' paths_name | sort | uniq > paths_end
 
 clean: clean_cscope_files clean_c_objects clean_bash_files
 	rm -f paths_id paths_name paths_start paths_end
