@@ -6,7 +6,6 @@ all:
 	$(MAKE) database -s
 	$(MAKE) c_build -s
 	$(MAKE) run -s
-	$(MAKE) clean_bash_files -s
 	$(MAKE) id_to_name -s
 
 database:
@@ -31,15 +30,12 @@ id_to_name:
     echo -n "$${fn} " && (\grep "\<$${fn}\>" paths_name | wc -l ); \
   done < paths_start | awk '{print $$2, $$1}' | sort -n > paths_start_power
 
-clean: clean_cscope_files clean_c_objects clean_bash_files
+clean: clean_source_copy clean_c_objects clean_bash_files
 	rm -f paths_id paths_name paths_start paths_end paths_start_power all_functions
-clean_cscope_files:
-	rm -f other_project_cscope_files_dir/cscope.files \
-        other_project_cscope_files_dir/cscope.in.out \
-        other_project_cscope_files_dir/cscope.out \
-        other_project_cscope_files_dir/cscope.po.out
 clean_c_objects:
 	rm -f paths paths.o $(addsuffix .o,${objects})
 clean_bash_files:
 	rm -f call_tree_down call_tree_up call_tree_down_tmp call_tree_up_tmp
+clean_source_copy:
+	(cd all_source_copy && find -not -name .gitignore -delete)
 
