@@ -39,6 +39,7 @@ int main(int argc, const char ** argv) {
   call_graphs = (int**)malloc(sizeof(int*) * func_N);
   called_graphs = (int**)malloc(sizeof(int*) * func_N);
 
+#if 0
   /* Fill up adjacency list with how up-function-calls. */
   fp = fopen(call_tree_up, "r");
   if (!fp) {
@@ -64,6 +65,7 @@ int main(int argc, const char ** argv) {
     i++;
   }
   fclose(fp);
+#endif
 
   /* Fill up adjacency list with down-function-calls. */
   fp = fopen(call_tree_down, "r");
@@ -96,7 +98,9 @@ int main(int argc, const char ** argv) {
 
   /* Free and return. */
   for (i=0; i<func_N; ++i){
+#if 0
     free(call_graphs[i]);
+#endif
     free(called_graphs[i]);
   }
   free(call_graphs);

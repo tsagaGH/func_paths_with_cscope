@@ -24,7 +24,9 @@ ctags -x --c-types=f -R --languages=C . |\
   cut -d" " -f1 | sort | uniq | awk '{print NR-1,$0}' > $this_dir/all_functions
 
 echo "Removing all #if#else#endif directives."
-find -name *.c -o -name *.h > cscope.files
+pushd / > /dev/null
+find $this_dir/all_source_copy -name *.c -o -name *.h > $this_dir/all_source_copy/cscope.files
+popd > /dev/null
 for fl in `cat cscope.files`;
 do
   # Either
