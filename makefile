@@ -35,7 +35,7 @@ clean: clean_source_copy clean_c_objects clean_bash_files
 clean_c_objects:
 	rm -f paths paths.o $(addsuffix .o,${objects})
 clean_bash_files:
-	rm -f call_tree_down call_tree_up call_tree_down_tmp call_tree_up_tmp
+	rm -f call_tree_down call_tree_down_tmp
 clean_source_copy:
 	(cd all_source_copy && find -not -name .gitignore -delete)
 

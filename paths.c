@@ -16,7 +16,6 @@ int main(int argc, const char ** argv) {
   FILE *fp;
 
   const char all_functions [256] = "/home/tsaga/Desktop/play_with_calling_trees/all_functions";
-  const char call_tree_up  [256] = "/home/tsaga/Desktop/play_with_calling_trees/call_tree_up";
   const char call_tree_down[256] = "/home/tsaga/Desktop/play_with_calling_trees/call_tree_down";
 
   /* Open functions file to count them. */
@@ -38,34 +37,6 @@ int main(int argc, const char ** argv) {
   /* Reserve memory for adjacency lists. */
   call_graphs = (int**)malloc(sizeof(int*) * func_N);
   called_graphs = (int**)malloc(sizeof(int*) * func_N);
-
-#if 0
-  /* Fill up adjacency list with how up-function-calls. */
-  fp = fopen(call_tree_up, "r");
-  if (!fp) {
-    fprintf(stderr, "File \"%s\" could not be opened. Returning with error...\n", call_tree_up);
-    fflush(stderr);
-    return 1;
-  }
-  buf = NULL;
-  len = 0;
-  i = 0;
-  while (getline(&buf, &len, fp) != -1) {
-    char * token = strtok(buf, " ");
-    int sz = atoi(token);
-    call_graphs[i] = (int*)malloc(sizeof(int) * (sz + 1));
-    call_graphs[i][0] = sz;
-    token = strtok(NULL, " ");
-    j=1;
-    while (token) {
-      call_graphs[i][j] = atoi(token);
-      j++;
-      token = strtok(NULL, " ");
-    }
-    i++;
-  }
-  fclose(fp);
-#endif
 
   /* Fill up adjacency list with down-function-calls. */
   fp = fopen(call_tree_down, "r");
@@ -97,13 +68,7 @@ int main(int argc, const char ** argv) {
   print_all_paths(func_N, (const int ** const)called_graphs);
 
   /* Free and return. */
-  for (i=0; i<func_N; ++i){
-#if 0
-    free(call_graphs[i]);
-#endif
-    free(called_graphs[i]);
-  }
-  free(call_graphs);
+  for (i=0; i<func_N; ++i) free(called_graphs[i]);
   free(called_graphs);
 
   return 0; // Success.
