@@ -11,7 +11,8 @@ find $SME_GIT_ROOT -name *.c -o -name *.h | \
   \grep -v \
     -e ${SME_GIT_ROOT}\[^/]*/include \
     -e ${SME_GIT_ROOT}\[^/]*/cgc_ver \
-    -e ${SME_GIT_ROOT}\[^/]*/build_cfg > $this_dir/all_source_copy/all_source_files
+    -e ${SME_GIT_ROOT}\[^/]*/build_cfg > \
+      $this_dir/all_source_copy/all_source_files
 popd > /dev/null
 
 pushd $this_dir/all_source_copy > /dev/null
