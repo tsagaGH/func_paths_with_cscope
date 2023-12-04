@@ -1,4 +1,4 @@
-#/usr/bin/bash
+#!/usr/bin/bash
 
 this_dir=`dirname -- "$( readlink -f -- "$0"; )";`
 
